@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>元靶科技 MetaTarget bio · 内部知识库</title>
+<link rel="stylesheet" href="assets/css/main.css">
+<style>
+  body.locked { overflow: hidden; }
+  .gate {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--paper, #f7f5f0);
+    transition: opacity .35s ease;
+  }
+  .gate-off { opacity: 0; pointer-events: none; }
+  .gate-card {
+    width: min(360px, calc(100vw - 48px));
+    background: #fff; border: 1px solid #e3ded2; border-radius: 10px;
+    padding: 36px 32px 28px; box-shadow: 0 12px 40px rgba(30, 28, 24, .08);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .gate-brand { font-family: "Songti SC", "Noto Serif CJK SC", "STSong", serif; font-size: 26px; font-weight: 700; color: #1e1c18; }
+  .gate-en { font-size: 13px; color: #6b675e; letter-spacing: .04em; }
+  .gate-note { font-size: 12px; color: #a3542b; margin: 4px 0 14px; }
+  .gate-card label { font-size: 13px; color: #3d3a34; }
+  .gate-card input[type="password"] {
+    font-size: 16px; padding: 10px 12px; border: 1px solid #cfc9bb; border-radius: 6px;
+    background: #fdfcf9; color: #1e1c18; outline: none;
+  }
+  .gate-card input[type="password"]:focus { border-color: #22696a; box-shadow: 0 0 0 3px rgba(34, 105, 106, .15); }
+  .gate-card button {
+    margin-top: 6px; padding: 10px 12px; font-size: 15px; cursor: pointer;
+    background: #22696a; color: #fff; border: none; border-radius: 6px;
+  }
+  .gate-card button:hover:not(:disabled) { background: #1b5455; }
+  .gate-card button:disabled { opacity: .6; cursor: default; }
+  .gate-err { font-size: 13px; color: #b03a2e; }
+  .gate-foot { margin-top: 14px; font-size: 11px; color: #8b867b; line-height: 1.6; }
+  @media (prefers-reduced-motion: reduce) { .gate { transition: none; } }
+</style>
+</head>
+<body class="locked">
+
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+
+<header class="topbar">
+  <button id="menuToggle" class="menu-toggle" aria-label="打开导航" aria-expanded="false">☰</button>
+  <span class="topbar-title">元靶科技 <span class="topbar-en">MetaTarget bio</span> · 内部知识库</span>
+</header>
+
+<nav class="sidebar" id="sidebar" aria-label="全站导航">
+  <div class="brand">
+    <div class="brand-name">元靶科技</div>
+    <div class="brand-en">MetaTarget bio</div>
+    <div class="brand-sub">竞品分析 × 证据与决策框架</div>
+    <div class="brand-tag">内部参考 · 请勿外传</div>
+  </div>
+  <div class="search-box">
+    <input type="search" id="searchInput" placeholder="搜索全站内容…" autocomplete="off" aria-label="全文搜索">
+    <div class="search-results" id="searchResults" hidden></div>
+  </div>
+  <ul class="nav-list" id="navList"></ul>
+  <div class="sidebar-foot">
+    内容底稿：2026-07 整合版<br>
+    纯静态构建 · 无任何外部请求
+  </div>
+</nav>
+<div class="sidebar-mask" id="sidebarMask" hidden></div>
+
+<main class="main" id="main">
+  <article id="pageRoot" class="page"></article>
+</main>
+
+<button id="backTop" class="back-top" aria-label="返回顶部" hidden>↑</button>
+
+<footer class="site-footer">内部参考资料｜含团队规划与未发表工作抽象描述｜请勿外传</footer>
+
+<div class="gate" id="gate">
+  <form class="gate-card" id="gateForm">
+    <div class="gate-brand">元靶科技</div>
+    <div class="gate-en">MetaTarget bio · 内部知识库</div>
+    <p class="gate-note">内部参考 · 请勿外传 · 请输入访问密码</p>
+    <label for="gatePw">访问密码</label>
+    <input type="password" id="gatePw" autocomplete="current-password" required>
+    <button type="submit" id="gateBtn">进入</button>
+    <div class="gate-err" id="gateErr" hidden>密码错误，请重试</div>
+    <div class="gate-foot">内容经加密保护，解密在您的浏览器本地完成。<br>内部参考资料｜请勿外传</div>
+  </form>
+</div>
+
+<script src="assets/js/payload.js"></script>
+<script src="assets/js/gate.js"></script>
+</body>
+</html>
