@@ -1,0 +1,138 @@
+/* ============================================================
+   元靶科技 MetaTarget bio · 团队讨论区（页面 12b）
+   只复用 main.css 的设计 token；桌面优先，移动端卡片堆叠
+   ============================================================ */
+
+/* ---------- 运行模式横幅 ---------- */
+.dc-banner {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  border: 1px solid; border-radius: var(--radius);
+  padding: 10px 14px; margin: 0 0 8px;
+  font-size: 13.5px;
+}
+.dc-banner.shared { color: var(--fact); background: var(--fact-bg); border-color: var(--fact-line); }
+.dc-banner.local { color: var(--risk); background: var(--risk-bg); border-color: var(--risk-line); }
+.dc-banner-tag { font-weight: 700; letter-spacing: .03em; white-space: nowrap; }
+.dc-banner-note { font-size: 12.5px; opacity: .85; }
+.dc-banner-text { flex: 1; min-width: 220px; }
+.dc-banner-sub { margin: 4px 0 8px; }
+.dc-banner-sub.warn { color: var(--risk); }
+
+.dc-mini {
+  border: 1px solid var(--line); background: var(--panel);
+  color: var(--accent-strong); border-radius: 7px;
+  font-size: 12.5px; padding: 3px 10px; cursor: pointer;
+  font-family: var(--sans);
+}
+.dc-mini:hover { background: var(--accent-soft); border-color: var(--accent-line); }
+.dc-mini[disabled] { opacity: .5; cursor: default; }
+
+/* ---------- 工具条 ---------- */
+.dc-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 4px 0 14px; }
+.dc-sync-note { margin-left: auto; }
+
+/* ---------- 话题卡片 ---------- */
+.dc-cards { display: flex; flex-direction: column; gap: 10px; }
+.dc-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "title side" "meta side";
+  gap: 2px 14px; align-items: center;
+  text-align: left; cursor: pointer;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 12px 16px;
+  font-family: var(--sans); color: var(--ink);
+}
+.dc-card:hover { border-color: var(--accent-line); background: var(--accent-soft); }
+.dc-card-title { grid-area: title; font-weight: 600; font-size: 15px; }
+.dc-card-meta { grid-area: meta; font-size: 12.5px; color: var(--muted); }
+.dc-card-side { grid-area: side; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.dc-count { font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+.dc-status {
+  display: inline-block; font-size: 11.5px; font-weight: 600;
+  padding: 1.5px 9px; border-radius: 999px; border: 1px solid; white-space: nowrap;
+}
+.dc-status.open { color: var(--accent-strong); background: var(--accent-soft); border-color: var(--accent-line); }
+.dc-status.resolved { color: var(--demo); background: var(--demo-bg); border-color: var(--demo-line); }
+
+.dc-empty {
+  border: 1px dashed var(--line); border-radius: var(--radius);
+  color: var(--muted); text-align: center;
+  padding: 28px 16px; background: var(--panel-soft);
+}
+.dc-loading { padding: 18px 4px; }
+.dc-err {
+  color: var(--risk); background: var(--risk-bg); border: 1px solid var(--risk-line);
+  border-radius: 8px; padding: 9px 13px; margin: 10px 0; font-size: 13.5px;
+}
+
+/* ---------- 表单 ---------- */
+.dc-form { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+.dc-form-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.dc-label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin: 12px 0 5px; }
+.dc-inline-label { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+.dc-input, .dc-textarea, .dc-select {
+  width: 100%; padding: 8px 11px;
+  border: 1px solid var(--line); border-radius: 8px;
+  background: var(--paper); color: var(--ink);
+  font-size: 14px; font-family: var(--sans); line-height: 1.6;
+}
+.dc-textarea { resize: vertical; }
+.dc-input:focus, .dc-textarea:focus, .dc-select:focus {
+  outline: 2px solid var(--accent-line); border-color: var(--accent);
+}
+.dc-select { width: auto; min-width: 130px; }
+.dc-form-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.dc-img-status { min-height: 1em; }
+
+/* ---------- 详情 ---------- */
+.dc-detail-title { font-family: var(--serif); font-size: 20px; margin: 6px 0 4px; }
+.dc-detail-meta { margin-bottom: 12px; }
+.dc-body {
+  background: var(--panel); border: 1px solid var(--line-soft);
+  border-radius: var(--radius); padding: 14px 16px;
+  font-size: 14.5px; line-height: 1.8; word-break: break-word;
+}
+.dc-comments-head { font-family: var(--serif); font-size: 16px; margin: 18px 0 8px; padding-left: 10px; border-left: 3px solid var(--accent); }
+.dc-comment { border-top: 1px solid var(--line-soft); padding: 10px 0; }
+.dc-comment.pending { opacity: .6; }
+.dc-comment-meta { margin-bottom: 4px; }
+.dc-comment .dc-body { background: var(--panel-soft); }
+.dc-composer { margin-top: 14px; }
+
+/* ---------- 插图 ---------- */
+.dc-img {
+  display: block; max-width: 420px; width: auto; height: auto;
+  border: 1px solid var(--line); border-radius: 8px; margin: 8px 0;
+  cursor: zoom-in; background: var(--panel-soft);
+}
+.dc-img.loading { min-width: 120px; min-height: 60px; }
+.dc-img.broken { cursor: default; opacity: .5; }
+
+.dc-lightbox {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(28, 33, 38, .82);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; cursor: zoom-out; padding: 24px;
+}
+.dc-lightbox img {
+  max-width: 96vw; max-height: 88vh;
+  border-radius: 8px; background: var(--panel);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .4);
+}
+.dc-lb-hint { color: #fff; font-size: 12.5px; opacity: .8; }
+
+/* ---------- 响应式：移动端卡片堆叠、图片全宽 ---------- */
+@media (max-width: 640px) {
+  .dc-card { grid-template-columns: 1fr; grid-template-areas: "title" "meta" "side"; }
+  .dc-card-side { flex-direction: row; align-items: center; gap: 10px; margin-top: 4px; }
+  .dc-sync-note { margin-left: 0; width: 100%; }
+  .dc-img { max-width: 100%; }
+  .dc-form { padding: 14px; }
+}
+
+/* ---------- 遵循 prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .dc-card, .dc-mini, .dc-img { transition: none; }
+}

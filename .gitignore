@@ -1,1 +1,9 @@
 .DS_Store
+
+# 明文内容源（只保留在本地，不进入公开仓库）
+content-src/
+
+# 内部母文档与临时产物（不进入公开仓库）
+YuanTarget_*.md
+tools/out/
+*.decrypted.js

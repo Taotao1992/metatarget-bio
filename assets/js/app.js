@@ -234,6 +234,57 @@
     searchResults.hidden = false;
   }
 
+  /* ---------- 外链离站提示（§0：用户主动点击来源时提示「即将离开内部站」） ---------- */
+  var leaveMask = null, leaveHost = null, leaveLabel = null, leaveGo = null, leaveCancel = null, pendingHref = '';
+
+  function ensureLeaveModal() {
+    if (leaveMask) return;
+    leaveMask = document.createElement('div');
+    leaveMask.className = 'leave-mask';
+    leaveMask.hidden = true;
+    leaveMask.innerHTML =
+      '<div class="leave-card" role="dialog" aria-modal="true" aria-labelledby="leaveTitle">' +
+      '<div class="leave-title" id="leaveTitle">即将离开内部站</div>' +
+      '<p class="leave-body">前往外部来源：<b class="leave-host"></b><br>' +
+      '<span class="leave-label"></span></p>' +
+      '<p class="leave-note">外部网站内容不受本站控制，请在来源页面核对口径与版本。链接将在新标签页打开。</p>' +
+      '<div class="leave-actions">' +
+      '<button type="button" class="leave-go">继续前往</button>' +
+      '<button type="button" class="leave-cancel">取消</button>' +
+      '</div></div>';
+    document.body.appendChild(leaveMask);
+    leaveHost = leaveMask.querySelector('.leave-host');
+    leaveLabel = leaveMask.querySelector('.leave-label');
+    leaveGo = leaveMask.querySelector('.leave-go');
+    leaveCancel = leaveMask.querySelector('.leave-cancel');
+    leaveGo.addEventListener('click', function () {
+      window.open(pendingHref, '_blank', 'noopener');
+      hideLeave();
+    });
+    leaveCancel.addEventListener('click', hideLeave);
+    leaveMask.addEventListener('click', function (e) { if (e.target === leaveMask) hideLeave(); });
+  }
+
+  function hideLeave() { if (leaveMask) leaveMask.hidden = true; pendingHref = ''; }
+
+  function showLeave(href, label) {
+    ensureLeaveModal();
+    pendingHref = href;
+    try { leaveHost.textContent = new URL(href).hostname; } catch (e) { leaveHost.textContent = href; }
+    leaveLabel.textContent = label || href;
+    leaveMask.hidden = false;
+    leaveGo.focus();
+  }
+
+  document.addEventListener('click', function (e) {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var t = e.target;
+    var a = t && t.closest ? t.closest('a[href^="http"]') : null;
+    if (!a) return;
+    e.preventDefault();
+    showLeave(a.href, (a.textContent || '').replace(/\s+/g, ' ').trim());
+  });
+
   /* ---------- 移动端抽屉 ---------- */
   function openDrawer() {
     sidebar.classList.add('open');
@@ -265,7 +316,7 @@
     if (!e.target.closest('.search-box')) searchResults.hidden = true;
   });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { searchResults.hidden = true; closeDrawer(); }
+    if (e.key === 'Escape') { searchResults.hidden = true; closeDrawer(); hideLeave(); }
   });
 
   route();
