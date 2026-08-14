@@ -1,0 +1,43 @@
+name: Meeting reminder
+
+# 团队 Zoom 例会自动提醒：每天检查一次，仅在会议前 3 天（周四，布里斯班上午）发信。
+# 也可在 Actions 页面手动 Run workflow 发送测试邮件（无视日期）。
+# 所需 Secrets 见 tools/reminder/README.md。
+
+on:
+  schedule:
+    # UTC 23:05 ≈ 布里斯班次日 09:05（AEST, UTC+10 无夏令时）
+    - cron: '5 23 * * *'
+  workflow_dispatch:
+    inputs:
+      test:
+        description: '发送测试邮件（无视日期，主题加【测试】）'
+        type: boolean
+        default: true
+
+permissions: {}
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install nodemailer
+        run: npm install nodemailer@6 --no-save
+
+      - name: Send reminder (only on meeting minus 3 days)
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          REMINDER_TO: ${{ secrets.REMINDER_TO }}
+          ZOOM_LINK: ${{ secrets.ZOOM_LINK }}
+          MTB_SUPABASE_URL: ${{ secrets.MTB_SUPABASE_URL }}
+          MTB_SUPABASE_ANON_KEY: ${{ secrets.MTB_SUPABASE_ANON_KEY }}
+          MTB_SHARED_SECRET: ${{ secrets.MTB_SHARED_SECRET }}
+          FORCE_SEND: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.test == 'true' && '1' || '0' }}
+        run: node tools/reminder/send-reminder.mjs

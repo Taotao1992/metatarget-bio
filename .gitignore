@@ -6,4 +6,7 @@ content-src/
 # 内部母文档与临时产物（不进入公开仓库）
 YuanTarget_*.md
 tools/out/
+tools/.tmp-test/
+tools/node_modules/
+tools/package*.json
 *.decrypted.js
