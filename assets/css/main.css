@@ -430,6 +430,7 @@ pre.code {
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
 }
+.leave-mask[hidden] { display: none; }
 .leave-card {
   width: min(420px, 100%);
   background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
