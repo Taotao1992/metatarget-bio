@@ -183,8 +183,8 @@
   text-transform: uppercase; letter-spacing: .02em;
 }
 .mtb-att-meta { flex: 1; min-width: 0; }
-.mtb-att-name { font-weight: 600; word-break: break-all; }
-.mtb-att-sub { font-size: 12px; color: var(--muted); }
+.mtb-att-name { display: block; font-weight: 600; word-break: break-all; }
+.mtb-att-sub { display: block; font-size: 12px; color: var(--muted); }
 .mtb-att-dl { flex: none; font-size: 12.5px; }
 video.mtb-media { display: block; max-width: 480px; width: 100%; border-radius: 8px; border: 1px solid var(--line); background: #000; margin: 8px 0; }
 audio.mtb-media { display: block; width: min(420px, 100%); margin: 8px 0; }
