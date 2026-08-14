@@ -221,3 +221,28 @@ audio.mtb-media { display: block; width: min(420px, 100%); margin: 8px 0; }
 .mtg-join:hover { background: var(--accent-strong); }
 .mtg-note { font-size: 12.5px; color: var(--muted); }
 .mtg-card.compact { padding: 12px 14px; }
+
+/* ---------- 删除与二次确认 ---------- */
+.dc-mini-danger { color: var(--risk); border-color: var(--risk-line); }
+.dc-mini-danger:hover { background: var(--risk-bg); border-color: var(--risk); }
+.dc-delc {
+  border: none; background: none; padding: 0 0 0 10px;
+  color: var(--risk); font-size: 12px; cursor: pointer; font-family: var(--sans);
+}
+.dc-delc:hover { text-decoration: underline; }
+.dc-delc[disabled] { opacity: .5; cursor: default; text-decoration: none; }
+.dc-confirm-mask {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(28, 33, 38, .45);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.dc-confirm-card {
+  width: min(400px, 100%);
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 20px 22px 16px; box-shadow: 0 16px 48px rgba(28, 33, 38, .25);
+}
+.dc-confirm-title { font-family: var(--serif); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.dc-confirm-body { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 14px; line-height: 1.7; word-break: break-all; }
+.dc-confirm-actions { display: flex; gap: 10px; }
+.dc-btn-danger { background: var(--risk); border-color: var(--risk); }
+.dc-btn-danger:hover { background: var(--risk); filter: brightness(.92); }
