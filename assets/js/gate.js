@@ -11,6 +11,9 @@
   var btn = document.getElementById('gateBtn');
   var err = document.getElementById('gateErr');
   var SESSION_KEY = 'mtb_unlock';
+  var REMEMBER_KEY = 'mtb_unlock_remember';
+  var REMEMBER_DAYS = 30;
+  var rememberInput = document.getElementById('gateRemember');
 
   function b64ToBytes(b64) {
     var bin = atob(b64);
@@ -46,9 +49,26 @@
         return crypto.subtle.exportKey('raw', key);
       })
       .then(function (raw) {
-        try { sessionStorage.setItem(SESSION_KEY, bytesToB64(new Uint8Array(raw))); } catch (e) { /* 私密模式下忽略 */ }
+        var b64 = bytesToB64(new Uint8Array(raw));
+        try { sessionStorage.setItem(SESSION_KEY, b64); } catch (e) { /* 私密模式下忽略 */ }
+        /* 勾选「记住 30 天」：派生密钥（非密码本身）存 localStorage，过期自动失效 */
+        try {
+          if (rememberInput && rememberInput.checked) {
+            localStorage.setItem(REMEMBER_KEY, JSON.stringify({ k: b64, exp: Date.now() + REMEMBER_DAYS * 86400000 }));
+          } else {
+            localStorage.removeItem(REMEMBER_KEY);
+          }
+        } catch (e) { /* ignore */ }
         boot();
       });
+  }
+
+  /* 尝试用已存密钥直接解锁；失败返回 false 走密码表单 */
+  function tryStored(rawB64, clearFn) {
+    return crypto.subtle.importKey('raw', b64ToBytes(rawB64), { name: 'AES-GCM', length: 256 }, false, ['decrypt'])
+      .then(decryptAndBoot)
+      .then(function () { return true; })
+      .catch(function () { clearFn(); return false; });
   }
 
   function boot() {
@@ -68,15 +88,32 @@
     pwInput.focus();
   }
 
-  /* 同一会话内已解锁过：直接复用派生密钥 */
-  var saved = null;
-  try { saved = sessionStorage.getItem(SESSION_KEY); } catch (e) { /* ignore */ }
-  if (saved) {
-    crypto.subtle.importKey('raw', b64ToBytes(saved), { name: 'AES-GCM', length: 256 }, false, ['decrypt'])
-      .then(decryptAndBoot)
-      .catch(function () {
-        try { sessionStorage.removeItem(SESSION_KEY); } catch (e) { /* ignore */ }
-      });
+  /* 已解锁过：优先 localStorage（记住 30 天），再 sessionStorage（本会话） */
+  var remembered = null;
+  try {
+    var raw = localStorage.getItem(REMEMBER_KEY);
+    if (raw) {
+      var rec = JSON.parse(raw);
+      if (rec && rec.k && rec.exp > Date.now()) remembered = rec.k;
+      else localStorage.removeItem(REMEMBER_KEY);
+    }
+  } catch (e) { /* ignore */ }
+  var sessionSaved = null;
+  try { sessionSaved = sessionStorage.getItem(SESSION_KEY); } catch (e) { /* ignore */ }
+  if (remembered) {
+    tryStored(remembered, function () {
+      try { localStorage.removeItem(REMEMBER_KEY); } catch (e) { /* ignore */ }
+    }).then(function (okDone) {
+      if (!okDone && sessionSaved) {
+        tryStored(sessionSaved, function () {
+          try { sessionStorage.removeItem(SESSION_KEY); } catch (e) { /* ignore */ }
+        });
+      }
+    });
+  } else if (sessionSaved) {
+    tryStored(sessionSaved, function () {
+      try { sessionStorage.removeItem(SESSION_KEY); } catch (e) { /* ignore */ }
+    });
   }
 
   form.addEventListener('submit', function (e) {
