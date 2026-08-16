@@ -258,6 +258,8 @@ body {
 .b-analysis { color: var(--analysis); background: var(--analysis-bg); border-color: var(--analysis-line); }
 .b-risk     { color: var(--risk);     background: var(--risk-bg);     border-color: var(--risk-line); }
 .b-demo     { color: var(--demo);     background: var(--demo-bg);     border-color: var(--demo-line); }
+.b-pending  { color: var(--risk);     background: var(--risk-bg);     border-color: var(--risk-line); }
+.b-reviewed { color: var(--fact);     background: var(--fact-bg);     border-color: var(--fact-line); }
 
 /* ---------- 来源按钮 ---------- */
 .src {

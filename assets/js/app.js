@@ -13,7 +13,9 @@
     plan:     ['公司规划', 'b-plan'],
     analysis: ['分析判断', 'b-analysis'],
     risk:     ['风险 · 待核验', 'b-risk'],
-    demo:     ['示例数据 Demo', 'b-demo']
+    demo:     ['示例数据 Demo', 'b-demo'],
+    pending:  ['待领域复核', 'b-pending'],
+    reviewed: ['人工复核通过', 'b-reviewed']
   };
 
   var pageRoot = document.getElementById('pageRoot');
@@ -147,6 +149,18 @@
     if (!samePage) {
       pageRoot.setAttribute('data-current', r.page);
       renderPage(r.page, r.section);
+      /* 路演模式入口：#/demo/pitch —— demo 页渲染完成后由 demo-lab 插件接管全屏导览 */
+      if (r.page === 'demo' && r.section === 'pitch') {
+        setTimeout(function () {
+          if (window.DEMO_LAB_UI && typeof window.DEMO_LAB_UI.startPitch === 'function') {
+            window.DEMO_LAB_UI.startPitch();
+          }
+        }, 60);
+      }
+    } else if (r.section === 'pitch' && r.page === 'demo') {
+      if (window.DEMO_LAB_UI && typeof window.DEMO_LAB_UI.startPitch === 'function') {
+        window.DEMO_LAB_UI.startPitch();
+      }
     } else if (r.section) {
       var el = document.getElementById('sec-' + r.section);
       if (el) el.scrollIntoView({ block: 'start' });

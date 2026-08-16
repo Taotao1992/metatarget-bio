@@ -9,4 +9,5 @@ tools/out/
 tools/.tmp-test/
 tools/node_modules/
 tools/package*.json
+assets/MetaTarget_网站改版需求_*
 *.decrypted.js

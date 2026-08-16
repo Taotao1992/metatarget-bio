@@ -37,7 +37,8 @@ const W = sandbox.window;
 
 /* ---- 页面清单 ---- */
 const EXPECTED = ['home', 'demo', 'verifiable-ai', 'insilico', 'auditor', 'lifecycle', 'pilot',
-  'services', 'team', 'archive', 'students', 'input-hub', 'discuss', 'sources', 'decisions', 'redteam'];
+  'services', 'team', 'archive', 'students', 'input-hub', 'discuss', 'sources', 'decisions', 'redteam',
+  'calendar'];
 const PAGES = W.SITE_PAGES || [];
 const ids = PAGES.map(pg => pg.id);
 ok(PAGES.length === EXPECTED.length, `页面数 = ${PAGES.length}（预期 ${EXPECTED.length}）`);
