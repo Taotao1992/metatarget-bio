@@ -866,3 +866,111 @@
 @media (prefers-reduced-motion: reduce) {
   .ta-pitch-act.on .viz * { animation: none !important; }
 }
+
+/* ============================================================
+   30 秒路演 v2：一次一幕（absolute 堆叠）+ 两栏幕内布局 + 底部导航
+   覆盖旧 .ta-pitch-* 规则（同特异性后置生效）
+   ============================================================ */
+.ta-pitch { padding: 0; display: flex; flex-direction: column; }
+.ta-pitch-head { flex: 0 0 auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 18px clamp(18px, 5vw, 56px) 10px; }
+.ta-pitch-stage {
+  flex: 1 1 auto; position: relative; min-height: 0; overflow: hidden;
+  display: block; max-width: none; margin: 0; padding: 0;
+}
+.ta-pitch-act {
+  position: absolute; inset: 0;
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  align-items: center; gap: clamp(28px, 5vw, 64px);
+  max-width: 1180px; margin: 0 auto; width: 100%;
+  padding: 8px clamp(18px, 5vw, 56px);
+  opacity: 0; visibility: hidden; transform: translateY(14px);
+  transition: opacity .38s cubic-bezier(.2, .7, .3, 1), transform .38s cubic-bezier(.2, .7, .3, 1), visibility 0s linear .38s;
+  max-height: none; overflow: visible;
+}
+.ta-pitch-act.on { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; z-index: 1; }
+.ta-pitch-act.ta-pitch-case { display: block; align-content: center; }
+.ta-pitch-act.ta-pitch-case .ta-pitch-kicker, .ta-pitch-act.ta-pitch-case .ta-pitch-title-sm { text-align: left; }
+.ta-pitch-case .ta-pitch-gates { margin-top: 14px; }
+.ta-pitch-final { margin-top: 16px; opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+.ta-pitch-final.on { opacity: 1; transform: none; }
+.ta-pitch-tagline { color: #3fd6c0; font-size: 14px; margin: 8px 0 0; font-weight: 600; }
+.ta-pitch-kicker {
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .18em;
+  color: #3fd6c0; font-weight: 700; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.ta-pitch-kicker::before { content: ""; width: 24px; height: 1.5px; background: #3fd6c0; flex: none; }
+.ta-pitch-title { font-family: var(--serif); font-size: clamp(24px, 3.2vw, 36px); line-height: 1.45; color: #e6edf4; font-weight: 700; }
+.ta-pitch-title-xl { font-size: clamp(30px, 4.6vw, 48px); }
+.ta-pitch-title-sm { font-size: clamp(17px, 2.2vw, 21px); font-weight: 700; color: #e6edf4; margin: 6px 0 4px; }
+.ta-pitch-text { font-size: 15.5px; line-height: 1.9; color: #9db0c1; max-width: 30em; margin: 12px 0 0; }
+.ta-pitch-txt .badge { margin-top: 14px; }
+.ta-pitch-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+.ta-pitch-viz { margin: 0; max-width: none; }
+.ta-pitch-viz .viz { width: 100%; height: auto; }
+
+/* 幕内元素 staggered 进场 */
+.ta-pitch-act .ta-pitch-kicker, .ta-pitch-act .ta-pitch-title, .ta-pitch-act .ta-pitch-title-sm,
+.ta-pitch-act .ta-pitch-text, .ta-pitch-act .ta-pitch-viz, .ta-pitch-act .badge, .ta-pitch-act .ta-pitch-ctas {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .38s cubic-bezier(.2, .7, .3, 1), transform .38s cubic-bezier(.2, .7, .3, 1);
+}
+.ta-pitch-act.on .ta-pitch-kicker { opacity: 1; transform: none; transition-delay: .05s; }
+.ta-pitch-act.on .ta-pitch-title, .ta-pitch-act.on .ta-pitch-title-sm { opacity: 1; transform: none; transition-delay: .14s; }
+.ta-pitch-act.on .ta-pitch-text { opacity: 1; transform: none; transition-delay: .23s; }
+.ta-pitch-act.on .badge { opacity: 1; transform: none; transition-delay: .30s; }
+.ta-pitch-act.on .ta-pitch-viz { opacity: 1; transform: none; transition-delay: .30s; }
+.ta-pitch-act.on .ta-pitch-ctas { opacity: 1; transform: none; transition-delay: .36s; }
+
+/* 底部：幕点 + 细进度条 + 控制 */
+.ta-pitch-foot {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 16px;
+  padding: 12px clamp(18px, 5vw, 56px) 18px;
+}
+.ta-pitch-dots { display: flex; gap: 8px; align-items: center; }
+.ta-pitch-dot {
+  width: 9px; height: 9px; border-radius: 999px; border: none; padding: 0;
+  background: #1f2d3d; cursor: pointer; transition: width .25s ease, background .25s ease;
+}
+.ta-pitch-dot.on { width: 26px; background: #3fd6c0; }
+.ta-pitch-dot:hover { background: #2fbfaa; }
+.ta-pitch-bar { flex: 1; height: 2px; background: #17222e; border-radius: 999px; overflow: hidden; margin: 0; }
+.ta-pitch-bar span { display: block; height: 100%; background: #3fd6c0; }
+.ta-pitch-btns { display: flex; gap: 8px; opacity: .55; transition: opacity .2s; }
+.ta-pitch-btns:hover, .ta-pitch-btns:focus-within, .ta-pitch-ended .ta-pitch-btns { opacity: 1; }
+.ta-pitch-ended .ta-pitch-btns .tk-btn.primary { background: #131e2b; color: #e6edf4; border-color: #1f2d3d; box-shadow: none; }
+.ta-pitch-ended .ta-pitch-btns .tk-btn.primary[data-pk="replay"],
+.ta-pitch-ended .ta-pitch-btns [data-pk="replay"].primary {
+  background: linear-gradient(135deg, #2fbfaa, #23a393); color: #06211d; border-color: transparent;
+}
+.ta-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .ta-pitch-act { grid-template-columns: 1fr; gap: 18px; align-content: center; overflow-y: auto; }
+  .ta-pitch-viz { order: -1; }
+  .ta-pitch-foot { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ta-pitch-act, .ta-pitch-act .ta-pitch-kicker, .ta-pitch-act .ta-pitch-title,
+  .ta-pitch-act .ta-pitch-title-sm, .ta-pitch-act .ta-pitch-text, .ta-pitch-act .ta-pitch-viz,
+  .ta-pitch-act .badge, .ta-pitch-act .ta-pitch-ctas, .ta-pitch-final { transition: none; }
+}
+
+/* ---------- 路演 v2 新场景：decision / buyers ---------- */
+.viz-decision .viz-src rect { fill: #131e2b; stroke: #1f2d3d; }
+.viz-decision .viz-src text { fill: #9db0c1; font-size: 12.5px; text-anchor: middle; }
+.viz-decision .viz-funnels line { stroke: #64788c; stroke-width: 1.3; stroke-dasharray: 3 4; }
+.viz-decision .viz-q circle { fill: rgba(63, 214, 192, .10); stroke: #3fd6c0; stroke-width: 1.6; }
+.viz-decision .viz-q text { fill: #3fd6c0; font-size: 44px; font-weight: 700; font-family: var(--serif); text-anchor: middle; }
+.ta-pitch-act.on .viz-decision .viz-q { animation: vizPulse 1.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+
+.viz-buyers .viz-svc rect { fill: #131e2b; stroke: #1f2d3d; }
+.viz-buyers .viz-svc text { fill: #e6edf4; font-size: 12.5px; text-anchor: middle; }
+.viz-buyers .viz-flows line { stroke: rgba(63, 214, 192, .4); stroke-width: 1.3; stroke-dasharray: 4 5; }
+.viz-buyers .viz-buyer circle { fill: rgba(63, 214, 192, .12); stroke: #3fd6c0; stroke-width: 1.4; }
+.viz-buyers .viz-buyer text { fill: #9db0c1; font-size: 11.5px; text-anchor: middle; }
+.ta-pitch-act.on .viz-buyers .viz-flows line { animation: vizFlow 1.1s linear infinite; }
+
+/* 案例幕：三门横排 */
+.ta-pitch-case .ta-pitch-gates { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media (max-width: 900px) { .ta-pitch-case .ta-pitch-gates { grid-template-columns: 1fr; } }
