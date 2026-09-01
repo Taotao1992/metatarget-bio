@@ -536,3 +536,154 @@
 .ms-toggle { margin-bottom: 8px; }
 .ms-legend { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .ms-lv { border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; background: var(--panel-soft); }
+
+/* ============================================================
+   区块 A 深色决策驾驶舱（.td 作用域；ta-* 旧浅色样式保留给 module-shared 浅页使用）
+   ============================================================ */
+.td .tk-hero { margin-bottom: 18px; }
+.td .tk-q {
+  font-family: var(--serif);
+  font-size: clamp(21px, 3.2vw, 30px); font-weight: 700; line-height: 1.5;
+  margin: 8px 0 10px; color: var(--d-ink);
+}
+.td .tk-hero-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.td .tk-dim { color: var(--d-muted); font-size: 12px; }
+.td .tk-modes { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.td .tk-gates {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px; margin-bottom: 14px;
+}
+.td .tk-gate {
+  background: linear-gradient(180deg, var(--d-panel2), var(--d-panel));
+  border: 1px solid var(--d-line); border-radius: 12px; padding: 14px 16px;
+  position: relative; transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.td .tk-gate:hover { transform: translateY(-2px); }
+.td .tk-gate.rs-good { border-top: 2px solid var(--d-green); }
+.td .tk-gate.rs-good:hover { box-shadow: 0 8px 30px rgba(74, 222, 128, .12); }
+.td .tk-gate.rs-warn { border-top: 2px solid var(--d-amber); }
+.td .tk-gate.rs-warn:hover { box-shadow: 0 8px 30px rgba(232, 179, 75, .12); }
+.td .tk-gate.rs-mid { border-top: 2px solid var(--d-violet); }
+.td .tk-gate-cn { font-size: 12px; color: var(--d-soft); margin: 3px 0 10px; }
+.td .tk-gate-res { font-size: 30px; font-weight: 700; letter-spacing: .02em; line-height: 1.1; margin-bottom: 8px; }
+.td .tk-gate.rs-good .tk-gate-res { color: var(--d-green); }
+.td .tk-gate.rs-warn .tk-gate-res { color: var(--d-amber); }
+.td .tk-gate.rs-mid .tk-gate-res { color: var(--d-violet); }
+.td .tk-gate-reason { font-size: 12.5px; line-height: 1.7; color: var(--d-soft); min-height: 3.4em; }
+.td .tk-gate-foot { margin-top: 10px; }
+
+.td .tk-final {
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  background: linear-gradient(135deg, rgba(63, 214, 192, .10), rgba(139, 156, 249, .06));
+  border: 1px solid var(--d-accent); border-radius: 12px;
+  padding: 16px 20px; margin-bottom: 14px;
+  box-shadow: 0 0 34px rgba(63, 214, 192, .10), inset 0 0 24px rgba(63, 214, 192, .04);
+}
+.td .tk-final-res { font-size: 26px; font-weight: 700; color: var(--d-accent); margin-top: 4px; }
+.td .tk-final-side { flex: 1; min-width: 240px; }
+.td .tk-final-line { font-size: 14px; line-height: 1.7; color: var(--d-ink); }
+.td .tk-final-meta { margin-top: 8px; font-size: 12px; color: var(--d-muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+.td .tk-progress { margin-bottom: 14px; background: var(--d-panel); border: 1px solid var(--d-line); border-radius: 12px; padding: 12px 16px; }
+.td .tk-progress-top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+.td .tk-progress-bar { height: 8px; border-radius: 999px; background: var(--d-line-soft); margin: 9px 0 7px; overflow: hidden; }
+.td .tk-progress-bar span {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, #23a393, var(--d-accent));
+  box-shadow: 0 0 12px var(--d-glow); border-radius: 999px;
+}
+.td .tk-progress-note { font-size: 12px; color: var(--d-muted); line-height: 1.7; }
+
+.td .tk-panel { margin-bottom: 14px; }
+.td .tk-panel-head { margin-bottom: 10px; }
+.td .tk-table { color: var(--d-ink); }
+.td .tk-table th { color: var(--d-muted); border-bottom-color: var(--d-line); }
+.td .tk-table td { border-bottom-color: var(--d-line-soft); }
+.td .tk-table tr.ta-row-link:hover { background: rgba(63, 214, 192, .06); }
+.td .tk-note { font-size: 12.5px; color: var(--d-muted); margin-top: 10px; line-height: 1.7; }
+.td .tk-accent { color: var(--d-accent); font-weight: 600; font-size: 12.5px; }
+.td .tk-tag {
+  display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 999px;
+  border: 1px solid var(--d-line); color: var(--d-soft);
+}
+.td .tk-kv dt { color: var(--d-muted); }
+.td .tk-kv dd { color: var(--d-ink); }
+
+/* 标签页 */
+.td .tk-tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--d-line); margin-bottom: 14px; }
+.td .tk-tab {
+  border: none; background: none; cursor: pointer; font-family: var(--sans);
+  font-size: 13px; font-weight: 600; color: var(--d-muted);
+  padding: 8px 13px; border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.td .tk-tab:hover { color: var(--d-ink); }
+.td .tk-tab.on { color: var(--d-accent); border-bottom-color: var(--d-accent); }
+.td .tk-tabpanel { display: none; }
+.td .tk-tabpanel.on { display: block; }
+
+/* 五问 */
+.td .tk-why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+.td .tk-why-cell { border: 1px solid var(--d-line); border-radius: 10px; padding: 12px 13px; background: var(--d-panel2); }
+.td .tk-why-q { color: var(--d-accent); font-size: 12px; font-weight: 700; margin-bottom: 5px; }
+.td .tk-why-a { font-size: 12.5px; color: var(--d-soft); line-height: 1.7; }
+
+.td .tk-export { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.td .tk-export .tk-note { flex-basis: 100%; margin-top: 2px; }
+.td .ta-modules summary { color: var(--d-accent); }
+.td .ta-kv { color: var(--d-ink); }
+
+/* ---------- 10 秒路演覆盖层（深色） ---------- */
+.ta-pitch {
+  background:
+    radial-gradient(1000px 500px at 70% -10%, rgba(63, 214, 192, .10), transparent 60%),
+    linear-gradient(rgba(63, 214, 192, .03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63, 214, 192, .03) 1px, transparent 1px),
+    #0a0f14;
+  background-size: auto, 30px 30px, 30px 30px, auto;
+  color: #e6edf4;
+}
+.ta-pitch-head b { color: #e6edf4; }
+.ta-pitch-brand-sub { color: #64788c; }
+.ta-pitch-clock { color: #64788c; }
+.ta-pitch-q { color: #e6edf4; }
+.ta-pitch-gate {
+  background: linear-gradient(180deg, #131e2b, #0f1721);
+  border-color: #1f2d3d;
+}
+.ta-pitch-gate.on { border-color: rgba(63, 214, 192, .55); box-shadow: 0 0 26px rgba(63, 214, 192, .14); }
+.ta-pg-name { color: #64788c; }
+.ta-pg-res { color: #e6edf4; }
+.ta-pitch-gate.rs-good.on .ta-pg-res { color: #4ade80; }
+.ta-pitch-gate.rs-warn.on .ta-pg-res { color: #e8b34b; }
+.ta-pitch-final { color: #e6edf4; }
+.ta-pitch-final b { color: #3fd6c0; }
+.ta-pitch-final p { color: #9db0c1; }
+.ta-pitch-next { color: #3fd6c0; }
+.ta-pitch-bar { background: #17222e; }
+.ta-pitch-bar span { background: linear-gradient(90deg, #23a393, #3fd6c0); box-shadow: 0 0 10px rgba(63, 214, 192, .4); }
+
+/* ---------- 45/90 秒步进面板（深色） ---------- */
+.ta-tour-panel { background: #0f1721; border-color: #1f2d3d; color: #e6edf4; }
+.ta-tour-sec { color: #64788c; }
+.ta-tour-title { color: #e6edf4; }
+.ta-tour-text { color: #9db0c1; }
+
+/* ---------- 暗色工具类（无作用域版：供 .ta-pitch / .ta-tour-panel 等 body 级覆盖层使用） ---------- */
+.ta-pitch .tk-mono, .ta-tour-panel .tk-mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.ta-pitch .tk-btn, .ta-tour-panel .tk-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid #1f2d3d; border-radius: 9px;
+  background: #131e2b; color: #e6edf4;
+  font-size: 13px; font-weight: 600; font-family: var(--sans);
+  padding: 9px 18px; cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+.ta-pitch .tk-btn:hover { border-color: #3fd6c0; box-shadow: 0 0 0 3px rgba(63, 214, 192, .12); }
+.ta-pitch .tk-btn.primary {
+  background: linear-gradient(135deg, #2fbfaa, #23a393);
+  border-color: transparent; color: #06211d;
+  box-shadow: 0 4px 22px rgba(63, 214, 192, .35);
+}
+.ta-tour-panel .btn { border-color: #1f2d3d; }
+.ta-tour-panel .btn.ghost { background: #131e2b; color: #9db0c1; }
+.ta-tour-panel .btn:not(.ghost) { background: linear-gradient(135deg, #2fbfaa, #23a393); border-color: transparent; color: #06211d; }

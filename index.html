@@ -15,36 +15,45 @@
   .gate {
     position: fixed; inset: 0; z-index: 9999;
     display: flex; align-items: center; justify-content: center;
-    background: var(--paper, #f7f5f0);
+    background:
+      radial-gradient(900px 500px at 70% -10%, rgba(63, 214, 192, .08), transparent 60%),
+      linear-gradient(rgba(63, 214, 192, .03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(63, 214, 192, .03) 1px, transparent 1px),
+      #0a0f14;
+    background-size: auto, 30px 30px, 30px 30px, auto;
     transition: opacity .35s ease;
   }
   .gate-off { opacity: 0; pointer-events: none; }
   .gate-card {
-    width: min(360px, calc(100vw - 48px));
-    background: #fff; border: 1px solid #e3ded2; border-radius: 10px;
-    padding: 36px 32px 28px; box-shadow: 0 12px 40px rgba(30, 28, 24, .08);
+    width: min(380px, calc(100vw - 48px));
+    background: linear-gradient(180deg, #131e2b, #0f1721);
+    border: 1px solid #1f2d3d; border-radius: 14px;
+    padding: 38px 34px 28px;
+    box-shadow: 0 0 0 1px rgba(63, 214, 192, .06), 0 24px 70px rgba(0, 0, 0, .5), 0 0 60px rgba(63, 214, 192, .05);
     display: flex; flex-direction: column; gap: 10px;
   }
-  .gate-brand { font-family: "Songti SC", "Noto Serif CJK SC", "STSong", serif; font-size: 26px; font-weight: 700; color: #1e1c18; }
-  .gate-en { font-size: 13px; color: #6b675e; letter-spacing: .04em; }
-  .gate-note { font-size: 12px; color: #a3542b; margin: 4px 0 14px; }
-  .gate-card label { font-size: 13px; color: #3d3a34; }
+  .gate-brand { font-family: "Songti SC", "Noto Serif CJK SC", "STSong", serif; font-size: 27px; font-weight: 700; color: #e6edf4; letter-spacing: .04em; }
+  .gate-en { font-size: 12.5px; color: #3fd6c0; letter-spacing: .12em; font-family: "SF Mono", Menlo, Consolas, monospace; }
+  .gate-note { font-size: 12px; color: #e8b34b; margin: 4px 0 14px; }
+  .gate-card label { font-size: 13px; color: #9db0c1; }
   .gate-card input[type="password"] {
-    font-size: 16px; padding: 10px 12px; border: 1px solid #cfc9bb; border-radius: 6px;
-    background: #fdfcf9; color: #1e1c18; outline: none;
+    font-size: 16px; padding: 11px 13px; border: 1px solid #1f2d3d; border-radius: 8px;
+    background: #0a0f14; color: #e6edf4; outline: none;
+    font-family: "SF Mono", Menlo, Consolas, monospace; letter-spacing: .12em;
   }
-  .gate-card input[type="password"]:focus { border-color: #22696a; box-shadow: 0 0 0 3px rgba(34, 105, 106, .15); }
+  .gate-card input[type="password"]:focus { border-color: #3fd6c0; box-shadow: 0 0 0 3px rgba(63, 214, 192, .15); }
   .gate-card button {
-    margin-top: 6px; padding: 10px 12px; font-size: 15px; cursor: pointer;
-    background: #22696a; color: #fff; border: none; border-radius: 6px;
+    margin-top: 6px; padding: 11px 12px; font-size: 15px; font-weight: 600; cursor: pointer;
+    background: linear-gradient(135deg, #2fbfaa, #23a393); color: #06211d; border: none; border-radius: 8px;
+    box-shadow: 0 4px 22px rgba(63, 214, 192, .3);
   }
-  .gate-card button:hover:not(:disabled) { background: #1b5455; }
+  .gate-card button:hover:not(:disabled) { box-shadow: 0 6px 28px rgba(63, 214, 192, .45); }
   .gate-card button:disabled { opacity: .6; cursor: default; }
-  .gate-remember { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: #6b675e; cursor: pointer; margin: -2px 0 8px; }
-  .gate-remember input { accent-color: #1f5148; }
-  .gate-remember-note { color: #a3542b; font-size: 11.5px; }
-  .gate-err { font-size: 13px; color: #b03a2e; }
-  .gate-foot { margin-top: 14px; font-size: 11px; color: #8b867b; line-height: 1.6; }
+  .gate-remember { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: #9db0c1; cursor: pointer; margin: -2px 0 8px; }
+  .gate-remember input { accent-color: #3fd6c0; }
+  .gate-remember-note { color: #e8b34b; font-size: 11.5px; }
+  .gate-err { font-size: 13px; color: #f08a7e; }
+  .gate-foot { margin-top: 14px; font-size: 11px; color: #64788c; line-height: 1.6; }
   @media (prefers-reduced-motion: reduce) { .gate { transition: none; } }
 </style>
 </head>

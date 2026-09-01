@@ -28,12 +28,42 @@
   var searchInput = document.getElementById('searchInput');
   var searchResults = document.getElementById('searchResults');
 
-  /* ---------- 导航 ---------- */
+  /* ---------- 导航（六分组一级入口；页面 id 与路由不变） ---------- */
+  var NAV_GROUPS = [
+    { id: 'g-overview', label: '总览', pages: ['home'] },
+    { id: 'g-demo', label: '产品 Demo', pages: ['demo'] },
+    { id: 'g-tech', label: '技术与证据', pages: ['verifiable-ai', 'auditor', 'lifecycle', 'pilot'] },
+    { id: 'g-market', label: '市场与服务', pages: ['insilico', 'services'] },
+    { id: 'g-team', label: '团队与治理', pages: ['team', 'students', 'decisions'] },
+    { id: 'g-collab', label: '协作与档案', pages: ['archive', 'input-hub', 'discuss', 'sources', 'redteam', 'calendar'] }
+  ];
+  var NAV_LS = 'mtb-nav-groups';
+  function navGroupState() {
+    try { return JSON.parse(localStorage.getItem(NAV_LS) || '{}'); } catch (e) { return {}; }
+  }
   function buildNav() {
+    var st = navGroupState();
     var html = '';
-    PAGES.forEach(function (p, i) {
-      html += '<li><a href="#/' + p.id + '" data-page="' + p.id + '">' +
-        '<span class="nav-num">' + (i + 1) + '</span><span>' + p.nav + '</span></a></li>';
+    NAV_GROUPS.forEach(function (g) {
+      if (g.pages.length === 1) {
+        var p0 = pageById[g.pages[0]];
+        if (!p0) return;
+        html += '<li class="nav-solo"><a href="#/' + p0.id + '" data-page="' + p0.id + '">' +
+          '<span>' + g.label + '</span></a></li>';
+        return;
+      }
+      var open = st[g.id] !== false; /* 默认展开 */
+      html += '<li class="nav-group' + (open ? '' : ' collapsed') + '" data-group="' + g.id + '">' +
+        '<button type="button" class="nav-group-head" aria-expanded="' + open + '">' +
+        '<span>' + g.label + '</span><span class="nav-caret">▾</span></button>' +
+        '<ul class="nav-sub">';
+      g.pages.forEach(function (pid) {
+        var p = pageById[pid];
+        if (!p) return;
+        html += '<li><a href="#/' + p.id + '" data-page="' + p.id + '">' +
+          '<span class="nav-dot" aria-hidden="true"></span><span>' + p.nav + '</span></a></li>';
+      });
+      html += '</ul></li>';
     });
     navList.innerHTML = html;
   }
@@ -42,6 +72,17 @@
     var links = navList.querySelectorAll('a');
     for (var i = 0; i < links.length; i++) {
       links[i].classList.toggle('active', links[i].getAttribute('data-page') === pageId);
+    }
+    /* 当前页所在分组保持展开 */
+    var active = navList.querySelector('a[data-page="' + pageId + '"]');
+    var grp = active && active.closest ? active.closest('.nav-group') : null;
+    if (grp && grp.classList.contains('collapsed')) {
+      grp.classList.remove('collapsed');
+      var head = grp.querySelector('.nav-group-head');
+      if (head) head.setAttribute('aria-expanded', 'true');
+      var st = navGroupState();
+      st[grp.getAttribute('data-group')] = true;
+      try { localStorage.setItem(NAV_LS, JSON.stringify(st)); } catch (e) { /* ignore */ }
     }
   }
 
@@ -322,6 +363,16 @@
   });
   sidebarMask.addEventListener('click', closeDrawer);
   navList.addEventListener('click', function (e) {
+    var head = e.target.closest ? e.target.closest('.nav-group-head') : null;
+    if (head) {
+      var grp = head.closest('.nav-group');
+      var collapsed = grp.classList.toggle('collapsed');
+      head.setAttribute('aria-expanded', String(!collapsed));
+      var st = navGroupState();
+      st[grp.getAttribute('data-group')] = !collapsed;
+      try { localStorage.setItem(NAV_LS, JSON.stringify(st)); } catch (err) { /* ignore */ }
+      return;
+    }
     if (e.target.closest('a')) closeDrawer();
   });
   searchInput.addEventListener('input', doSearch);
