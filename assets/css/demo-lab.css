@@ -811,3 +811,58 @@
 .ta-pitch-final { margin-top: 14px; }
 .ta-pitch-cta-note { margin-top: 10px; color: #3fd6c0; font-size: 13px; }
 @media (prefers-reduced-motion: reduce) { .ta-pitch-act { transition: none; } }
+
+/* ---------- 路演分幕 SVG 场景 ---------- */
+.ta-pitch-viz { margin: 4px 0 14px; max-width: 560px; }
+.ta-pitch-viz .viz { width: 100%; height: auto; display: block; }
+.viz text { fill: #9db0c1; font-family: var(--sans); font-size: 13px; }
+.viz .viz-links line { stroke: rgba(63, 214, 192, .35); stroke-width: 1.2; stroke-dasharray: 4 5; }
+.viz .viz-node circle { fill: #131e2b; stroke: #1f2d3d; }
+.viz .viz-node text { fill: #9db0c1; font-size: 12px; text-anchor: middle; }
+.viz .viz-hub circle { fill: rgba(63, 214, 192, .14); stroke: #3fd6c0; stroke-width: 1.6; }
+.viz .viz-hub text { fill: #3fd6c0; font-weight: 700; font-family: var(--mono); text-anchor: middle; font-size: 15px; }
+
+/* 播放到本幕时场景动起来 */
+.ta-pitch-act.on .viz-brand .viz-hub { animation: vizPulse 1.6s ease-in-out infinite; transform-origin: 260px 75px; }
+.ta-pitch-act.on .viz-brand .viz-node { animation: vizPop .5s ease both; }
+.ta-pitch-act.on .viz-brand .viz-node:nth-of-type(2) { animation-delay: .08s; }
+.ta-pitch-act.on .viz-brand .viz-node:nth-of-type(3) { animation-delay: .16s; }
+.ta-pitch-act.on .viz-brand .viz-node:nth-of-type(4) { animation-delay: .24s; }
+.ta-pitch-act.on .viz-brand .viz-node:nth-of-type(5) { animation-delay: .32s; }
+.ta-pitch-act.on .viz-brand .viz-node:nth-of-type(6) { animation-delay: .4s; }
+@keyframes vizPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+@keyframes vizPop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+.viz-brand .viz-node, .viz-brand .viz-hub { transform-box: fill-box; transform-origin: center; }
+
+.viz-pipe .viz-docs rect, .viz-pipe .viz-gates rect, .viz-pipe .viz-verdict rect { fill: #131e2b; stroke: #1f2d3d; }
+.viz-pipe .viz-gates text, .viz-pipe .viz-verdict text { fill: #9db0c1; font-size: 13px; text-anchor: middle; }
+.viz-pipe .viz-verdict rect { stroke: #3fd6c0; }
+.viz-pipe .viz-verdict text { fill: #3fd6c0; font-weight: 700; }
+.viz-pipe .viz-docs line { stroke: #1f2d3d; stroke-width: 2; }
+.viz-pipe .viz-db { fill: rgba(139, 156, 249, .12) !important; stroke: #8b9cf9 !important; }
+.viz-pipe .viz-arrows line { stroke: #3fd6c0; stroke-width: 1.6; stroke-dasharray: 5 5; }
+.ta-pitch-act.on .viz-pipe .viz-arrows line { animation: vizFlow 1s linear infinite; }
+.ta-pitch-act.on .viz-pipe .viz-gates rect { animation: vizGateGlow .5s ease both; }
+.ta-pitch-act.on .viz-pipe .viz-gates rect:nth-of-type(2) { animation-delay: .15s; }
+.ta-pitch-act.on .viz-pipe .viz-gates rect:nth-of-type(3) { animation-delay: .3s; }
+@keyframes vizFlow { to { stroke-dashoffset: -10; } }
+@keyframes vizGateGlow { from { stroke: #1f2d3d; } to { stroke: #3fd6c0; } }
+
+.viz-edge .viz-flatbar rect { fill: rgba(157, 176, 193, .25); }
+.viz-edge .viz-flatbar text { fill: #64788c; font-family: var(--mono); }
+.viz-edge .viz-flatcap { font-size: 12px; }
+.viz-edge .viz-burst { stroke: #64788c; stroke-width: 1.4; stroke-dasharray: 3 4; }
+.viz-edge .viz-track rect { fill: rgba(63, 214, 192, .55); transform-origin: left center; transform-box: fill-box; }
+.viz-edge .viz-track text { fill: #9db0c1; font-size: 11.5px; }
+.ta-pitch-act.on .viz-edge .viz-track { animation: vizTrackGrow .6s cubic-bezier(.2, .7, .3, 1) both; }
+@keyframes vizTrackGrow { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+
+.viz-vision .viz-rise { stroke: rgba(63, 214, 192, .5); stroke-width: 1.6; stroke-dasharray: 6 6; }
+.viz-vision .viz-beacon circle { fill: rgba(63, 214, 192, .15); stroke: #3fd6c0; stroke-width: 1.6; }
+.viz-vision .viz-beacon text { fill: #9db0c1; font-size: 12.5px; }
+.ta-pitch-act.on .viz-vision .viz-beacon { animation: vizPop .5s ease both; }
+.ta-pitch-act.on .viz-vision .viz-rise { animation: vizFlow 1.2s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ta-pitch-act.on .viz * { animation: none !important; }
+}
