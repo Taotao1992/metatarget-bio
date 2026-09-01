@@ -32,10 +32,11 @@
   var NAV_GROUPS = [
     { id: 'g-overview', label: '总览', pages: ['home'] },
     { id: 'g-demo', label: '产品 Demo', pages: ['demo'] },
+    { id: 'g-discuss', label: '团队讨论区', pages: ['discuss'] },
     { id: 'g-tech', label: '技术与证据', pages: ['verifiable-ai', 'auditor', 'lifecycle', 'pilot'] },
     { id: 'g-market', label: '市场与服务', pages: ['insilico', 'services'] },
     { id: 'g-team', label: '团队与治理', pages: ['team', 'students', 'decisions'] },
-    { id: 'g-collab', label: '协作与档案', pages: ['archive', 'input-hub', 'discuss', 'sources', 'redteam', 'calendar'] }
+    { id: 'g-collab', label: '协作与档案', pages: ['archive', 'input-hub', 'sources', 'redteam', 'calendar'] }
   ];
   var NAV_LS = 'mtb-nav-groups';
   function navGroupState() {
