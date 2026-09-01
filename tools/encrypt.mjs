@@ -35,16 +35,33 @@ if (!files.length) {
 const header = '/* 元靶科技 MetaTarget bio · 内部知识库 —— 站点内容（明文源见私有 content-src/，本文件由 tools/encrypt.mjs 生成） */\n';
 const bundle = header + files.map(f => fs.readFileSync(f, 'utf8').trimEnd()).join('\n\n') + '\n';
 
-const salt = crypto.randomBytes(16);
+/* 复用上一版 payload 的 salt/iters：salt 不变 → 派生密钥不变 →
+   用户端「记住 30 天」的已存密钥在内容更新后仍然有效（IV 每次重新随机生成，
+   解密时从 payload 读取，不影响已存密钥）。首次构建或无历史 payload 时随机生成。 */
+let salt = null;
+let iters = ITERS;
+try {
+  const prev = fs.readFileSync(OUT, 'utf8');
+  const m = prev.match(/window\.__ENC_PAYLOAD = (\{[\s\S]*\});/);
+  if (m) {
+    const pp = JSON.parse(m[1]);
+    if (pp.salt) {
+      salt = Buffer.from(pp.salt, 'base64');
+      iters = pp.iters || ITERS;
+      console.log('复用上一版 payload 的 salt（已存「记住 30 天」密钥保持有效）');
+    }
+  }
+} catch (e) { /* 无历史 payload，走随机 */ }
+if (!salt) salt = crypto.randomBytes(16);
 const iv = crypto.randomBytes(12);
-const key = crypto.pbkdf2Sync(password, salt, ITERS, 32, 'sha256');
+const key = crypto.pbkdf2Sync(password, salt, iters, 32, 'sha256');
 const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
 const enc = Buffer.concat([cipher.update(bundle, 'utf8'), cipher.final()]);
 const tag = cipher.getAuthTag();
 
 const payload = {
   v: 1,
-  iters: ITERS,
+  iters: iters,
   salt: salt.toString('base64'),
   iv: iv.toString('base64'),
   data: Buffer.concat([enc, tag]).toString('base64')
