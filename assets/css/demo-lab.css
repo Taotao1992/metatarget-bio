@@ -974,3 +974,36 @@
 /* 案例幕：三门横排 */
 .ta-pitch-case .ta-pitch-gates { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 @media (max-width: 900px) { .ta-pitch-case .ta-pitch-gates { grid-template-columns: 1fr; } }
+
+/* ---------- 路演 v3：丝滑交叉淡化 + 故事线轨 ---------- */
+.ta-pitch-act {
+  transition: opacity .5s cubic-bezier(.25, .8, .3, 1), transform .5s cubic-bezier(.25, .8, .3, 1), visibility 0s linear .5s;
+  transform: translateY(8px);
+}
+.ta-pitch-act.leaving { opacity: 0; transform: translateY(-8px); visibility: visible; z-index: 0; }
+.ta-pitch-act.on { z-index: 2; }
+
+/* 故事线轨（右侧竖排；宽屏显示，窄屏隐藏，幕点仍在底部） */
+.ta-pitch-rail {
+  position: absolute; right: clamp(10px, 2.5vw, 30px); top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 4px; z-index: 3;
+  max-width: 200px;
+}
+.ta-pitch-rail-item {
+  display: flex; align-items: baseline; gap: 8px;
+  border: none; background: none; cursor: pointer; text-align: left;
+  padding: 5px 8px; border-radius: 7px; font-family: var(--sans);
+  transition: opacity .3s, background .2s;
+}
+.ta-pitch-rail-item:hover { background: rgba(63, 214, 192, .08); }
+.ta-rail-num { font-size: 10px; color: #3fd6c0; opacity: .8; }
+.ta-rail-en { display: block; font-size: 9.5px; letter-spacing: .12em; color: #64788c; font-family: var(--mono); }
+.ta-rail-cn { display: block; font-size: 12px; color: #9db0c1; line-height: 1.4; }
+.ta-pitch-rail-item.todo { opacity: .38; }
+.ta-pitch-rail-item.done { opacity: .72; }
+.ta-pitch-rail-item.done .ta-rail-cn { color: #b7c5d3; }
+.ta-pitch-rail-item.on { opacity: 1; background: rgba(63, 214, 192, .10); }
+.ta-pitch-rail-item.on .ta-rail-cn { color: #e6edf4; font-weight: 700; }
+.ta-pitch-rail-item.on .ta-rail-en { color: #3fd6c0; }
+@media (max-width: 1100px) { .ta-pitch-rail { display: none; } }
+@media (prefers-reduced-motion: reduce) { .ta-pitch-act, .ta-pitch-act.leaving { transition: none; } }
