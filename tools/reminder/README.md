@@ -42,6 +42,14 @@ FORCE_SEND=1 node tools/reminder/send-reminder.mjs --dry
 
 （`--dry` 不需要 nodemailer；真实发送需先 `npm i nodemailer`。）
 
+## 讨论区新动态邮件（discuss-notify）
+
+- `.github/workflows/discuss-notify.yml` 每小时检查一次讨论区，有新话题/评论就给
+  `REMINDER_TO` 里的成员发摘要邮件；本地预览：`FORCE_SEND=1 node tools/reminder/notify-new.mjs --dry`。
+- 游标存 Supabase：需先在 SQL Editor 执行 `tools/supabase/notify-state.sql`
+  （渲染版 `tools/out/mtb-notify-state.sql`）。没执行也能跑——自动降级为「看最近 1 小时」，
+  但可能重复提醒，建议尽快执行。
+
 ## 注意事项
 
 - **GitHub 会在仓库 60 天无活动后自动暂停 scheduled workflow**。届时 Actions 页

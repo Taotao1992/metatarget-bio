@@ -1404,3 +1404,11 @@
   .ta-art-img,
   .ta-art-track i::after { transition: none; animation: none !important; }
 }
+
+/* ---------- 靶点切换条（五案例） ---------- */
+.td .tk-switcher { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.td .tk-case-chip { display: inline-flex; align-items: baseline; gap: 8px; padding: 7px 14px; }
+.td .tk-case-chip b { font-size: 13.5px; }
+.td .tk-case-chip span { font-size: 11px; color: var(--d-muted); }
+.td .tk-case-chip.on span { color: var(--d-accent); }
+.td .tk-row-on td { background: rgba(63, 214, 192, .07); }
