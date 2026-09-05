@@ -30,7 +30,7 @@ async function rpc(name, body) {
   return res.json();
 }
 const getCursor = () => rpc('mtb_notify_get', { secret: CFG.secret, p_key: STATE_KEY });
-const setCursor = (iso) => rpc('mtb_notify_set', { secret: CFG.secret, p_key: STATE_KEY, p_value: JSON.stringify(iso) });
+const setCursor = (iso) => rpc('mtb_notify_set', { secret: CFG.secret, p_key: STATE_KEY, p_value: iso });
 const topicList = () => rpc('mtb_topic_list', { secret: CFG.secret });
 const commentList = (id) => rpc('mtb_comment_list', { secret: CFG.secret, p_topic_id: id });
 
@@ -48,26 +48,28 @@ async function main() {
   else {
     try {
       const c = await getCursor();
-      cursor = (c && typeof c === 'string') ? c : new Date(Date.now() - 3600e3).toISOString();
+      cursor = (c && typeof c === 'string') ? c.replace(/^"+|"+$/g, '') : new Date(Date.now() - 3600e3).toISOString();
+      if (!Date.parse(cursor)) cursor = new Date(Date.now() - 3600e3).toISOString();
     } catch (e) {
       /* 状态表还没建（notify-state.sql 未执行）时降级：看最近 1 小时 */
       console.log('[notify] 游标读取失败（' + e.message + '），降级为最近 1 小时');
       cursor = new Date(Date.now() - 3600e3).toISOString();
     }
   }
-  console.log(`[notify] 游标：${cursor}`);
+  const cursorMs = Date.parse(cursor);
+  console.log(`[notify] 游标：${cursor}（${cursorMs}）`);
 
   const topics = await topicList();
   const items = [];
   const titleById = {};
   for (const t of topics) {
     titleById[t.id] = t.title;
-    if (t.created_at > cursor) items.push({ kind: '新话题', when: t.created_at, author: t.author, title: t.title, text: stripHtml(t.body).slice(0, 120) });
+    if (Date.parse(t.created_at) > cursorMs) items.push({ kind: '新话题', when: t.created_at, author: t.author, title: t.title, text: stripHtml(t.body).slice(0, 120) });
   }
   for (const t of topics) {
     const comments = await commentList(t.id);
     for (const c of comments) {
-      if (c.created_at > cursor) {
+      if (Date.parse(c.created_at) > cursorMs) {
         items.push({ kind: '新评论', when: c.created_at, author: c.author, title: titleById[t.id] || '', text: stripHtml(c.body).slice(0, 120) });
       }
     }
